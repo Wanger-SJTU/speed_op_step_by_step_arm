@@ -2,5 +2,6 @@
 
 # step by step optimize deep learning operators
 
-- [ ] gflops
+- [x] gflops
 - [ ] matmul优化
+    - [x] vanilla matmul
