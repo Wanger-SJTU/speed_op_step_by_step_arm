@@ -6,7 +6,7 @@
 #undef A
 #undef B
 #undef C
-#define A(i, j) a[(j)*lda + (i)]
+#define A(i, j) a[(i)*lda + (j)]
 #define B(i, j) b[(j)*ldb + (i)]
 #define C(i, j) c[(j)*ldc + (i)]
 
@@ -14,7 +14,7 @@
 // col-major
 void matmul(int m, int n, int k, float *a, float *b, float *c) {
   int i, j, p;
-  int lda = m;
+  int lda = k;
   int ldb = k;
   int ldc = m;
 

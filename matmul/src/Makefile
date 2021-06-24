@@ -1,31 +1,28 @@
-CC=${NDK_CC}
-CXX=${NDK_CXX}
-
-
 
 #
 # sample makefile
 #
 
-CC         := g++
+CC         := clang++
 LINKER     := $(CC)
 CFLAGS     := -O3
 LDFLAGS    := -lm
 
-OBJS  := main.o matmul_raw.o
+# OBJS  := main.o matmul_raw.o
+OBJS  := main.o matmul_transpose.o
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-matmul: $(OBJS)
+matmul: clean $(OBJS) 
 	$(LINKER) $(OBJS) $(LDFLAGS)  -o main 
 
-run:	
+run: clean
 	make matmul
-	./main 3 512 512
+	./main 512 512 512
 
 clean:
-	rm -f *.o 
-	rm main
+	rm -f *.o main
+	
