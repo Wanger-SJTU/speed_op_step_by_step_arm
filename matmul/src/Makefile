@@ -11,7 +11,7 @@ LDFLAGS    := -lm
 OBJS  := main.o utils.o matmul_raw.o
 # OBJS  := main.o utils.o matmul_transpose.o
 # OBJS  := main.o utils.o gemm_1x4x1.o
-# OBJS  := main.o utils.o gemm_4x4x1.o
+# OBJS  := main.o utils.o gemm_4x4x1.o # wrong answer
 
 %.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
