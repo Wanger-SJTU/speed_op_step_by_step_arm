@@ -1,24 +1,19 @@
 
+#include <ctime>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <string>
-#include <sys/time.h>
-#include <vector>
-
-#include <stdint.h>
 #include <sys/syscall.h>
+#include <sys/time.h>
 #include <unistd.h>
+#include <vector>
 
 #include "matmul.h"
 
 using namespace std;
 
 int set_sched_affinity(const std::vector<int> cpu_ids) {
-// #define CPU_SETSIZE 1024
-// #define __NCPUBITS  (8 * sizeof (unsigned long))
-// typedef struct
-// {
-//    unsigned long __bits[CPU_SETSIZE / __NCPUBITS];
-// } cpu_set_t;
 
 // set affinity for thread
 #ifdef __GLIBC__
@@ -46,33 +41,41 @@ int main(int argc, char *argv[]) {
 
   set_sched_affinity({7});
 
-  int params[3];
+  int params[3]; // m k n
   for (int i = 1; i < 4; ++i) {
     params[i - 1] = stoi(argv[i]);
   }
 
-  float *a = new float[params[0] * params[1]];
-  float *b = new float[params[1] * params[2]];
-  float *c = new float[params[0] * params[2]];
+  float *a = new float[params[0] * params[1]]; // m * k
+  float *b = new float[params[1] * params[2]]; // k * n
+  float *c = new float[params[0] * params[2]]; // m * n
+  memset(c, 0, params[0] * params[2] * sizeof(float));
 
-  double flops = params[0] * params[2] * (2 * params[1] - 1);
-  int run_cnt = 20000;
+  test_acc(params[0], params[1], params[2], a, b, c);
+
+  double gflops = 2 * params[0] * params[2] * params[1] * 1e-9;
+  int run_cnt = 5000;
   struct timeval t1, t2;
 
+  printf("======== warm up ======\n");
   for (int i = 0; i < 50; ++i) {
     matmul(params[0], params[1], params[2], a, b, c);
   }
-  gettimeofday(&t1, nullptr);
+  printf("========== start ======\n");
+
+  auto time = clock();
   for (int i = 0; i < run_cnt; ++i) {
     matmul(params[0], params[1], params[2], a, b, c);
   }
-  gettimeofday(&t2, nullptr);
+  time = clock() - time;
+  // gettimeofday(&t2, nullptr);
 
-  double timeuse = (t2.tv_sec - t1.tv_sec);
+  // double timeuse = (t2.tv_sec - t1.tv_sec);
+  double timeuse = (time * 1.0) / CLOCKS_PER_SEC;
 
   printf("===========result=======\n");
-  printf(" use time   |   %.3f ms     \n", timeuse / run_cnt * 1000);
-  printf(" GFLOPS     |   %.3f     \n", flops * run_cnt / (timeuse)*1e-9);
+  printf(" use time   | %.3f ms     \n", timeuse / run_cnt * 1000);
+  printf(" GFLOPS     | %.3f     \n", gflops * run_cnt / (timeuse + 1e-6));
   printf("===========end==========\n");
 
   delete[] a;
