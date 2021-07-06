@@ -17,7 +17,7 @@
 
 /* Routine for computing C = A * B + C */
 // col-major
-void matmul(int m, int k, int n, float *a, float *b, float *c) {
+void matmul_ref(int m, int k, int n, float *a, float *b, float *c) {
   int i, j, p;
   int lda = m;
   int ldb = k;
@@ -31,8 +31,6 @@ void matmul(int m, int k, int n, float *a, float *b, float *c) {
             row of A and the jth column of B */
         C(i, j) += A(i, p) * B(p, j);
       }
-      printf("\n");
     }
   }
-  printf("\n");
 }

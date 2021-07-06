@@ -4,6 +4,8 @@
 
 #define A(i, j) a[(j)*m + (i)]
 
+double dclock();
+
 void print_matrix(int m, int n, float *a) {
   int i, j;
 
@@ -26,7 +28,12 @@ void set_matrix_value(int m, int n, float *a) {
   }
 }
 
-void test_acc(int m, int k, int n, float *a, float *b, float *c) {
+bool test_acc(int m, int k, int n) {
+
+  float *a = new float[m * k]; // m * k
+  float *b = new float[k * n]; // k * n
+  float *c = new float[m * n]; // m * n
+  memset(c, 0, m * n * sizeof(float));
 
   set_matrix_value(m, k, a);
   set_matrix_value(k, n, b);
@@ -34,28 +41,23 @@ void test_acc(int m, int k, int n, float *a, float *b, float *c) {
   print_matrix(k, n, b);
   matmul(m, k, n, a, b, c);
   print_matrix(m, n, c);
+  return true;
 }
 
 void eval_gflops(int m, int k, int n, float *a, float *b, float *c) {
 
   double gflops = 2 * m * k * n * 1e-9;
-  int run_cnt = 5000;
+  int run_cnt = 200;
 
-  printf("======== warm up ======\n");
   for (int i = 0; i < 50; ++i) {
     matmul(m, k, n, a, b, c);
   }
-  printf("========== start ======\n");
 
-  auto time = clock();
+  auto time = dclock();
   for (int i = 0; i < run_cnt; ++i) {
     matmul(m, k, n, a, b, c);
   }
-  time = clock() - time;
-  // gettimeofday(&t2, nullptr);
-
-  // double timeuse = (t2.tv_sec - t1.tv_sec);
-  double timeuse = (time * 1.0) / CLOCKS_PER_SEC;
+  double timeuse = dclock() - time;
 
   printf("===========result=======\n");
   printf(" use time   | %.3f ms     \n", timeuse / run_cnt * 1000);

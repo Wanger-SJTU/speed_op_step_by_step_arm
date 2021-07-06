@@ -2,31 +2,47 @@
 #
 # sample makefile
 #
+INC := ./inc
+OPT_SRC := ./opt_gemm
+UTILS_SRC := ./utils
+OUT := ./build
+
+TARGET := $(OUT)/main
 
 CC         := clang++
-LINKER     := $(CC)
-CFLAGS     := -O3
+LINKER     := $(CC) 
+CFLAGS     := -O3 -I$(INC)
 LDFLAGS    := -lm
 
-OBJS  := main.o utils.o matmul_raw.o
-# OBJS  := main.o utils.o matmul_transpose.o
-# OBJS  := main.o utils.o gemm_1x4x1.o
-# OBJS  := main.o utils.o gemm_4x4x1.o # wrong answer
 
-%.o: %.cpp
+comm_objs := $(OUT)/utils.o $(OUT)/dclock.o $(OUT)/matmul_raw.o
+
+perf_objs := $(OUT)/perf.o
+eval_objs := $(OUT)/eval.o
+
+test_objs := $(OUT)/matmul_opt_2.o
+
+$(OUT)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
-%.o: %.c
+	
+$(OUT)/%.o: $(OPT_SRC)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
-matmul: clean $(OBJS) 
-	$(LINKER) $(OBJS) $(LDFLAGS)  -o main 
+$(OUT)/%.o: $(UTILS_SRC)/%.cpp 
+	$(CC) $(CFLAGS) -c $< -o $@
+
+perf: clean $(perf_objs) $(test_objs) $(comm_objs)
+	$(LINKER) $(perf_objs) $(test_objs) $(comm_objs) $(LDFLAGS)  -o $(TARGET)
+	rm $(OUT)/*.o
+
+test: clean $(perf_objs) $(test_objs) $(comm_objs)
+	$(LINKER) $(eval_objs) $(test_objs) $(comm_objs) $(LDFLAGS)  -o $(TARGET)
+	rm $(OUT)/*.o
 
 run: clean
 	make matmul
-# ./main 512 512 512
-	./main 2 3 4
+	./main 128 128 128
 	make clean
 
 clean:
-	rm -f *.o main
-	
+	rm -rf build
