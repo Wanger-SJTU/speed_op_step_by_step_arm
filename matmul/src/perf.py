@@ -1,23 +1,28 @@
 
 import os
-
-def perf():
-    task_files = [
-        "matmul_raw",
-        "gemm_4x4x1",
-        "matmul_opt_2",
-        "matmul_transpose",
-        "gemm_1x4x1_row",
-        "gemm_4x4x4",
-        "matmul_opt_1",
-        "matmul_raw"
-    ]
-    last_task = ""
-    for item in task_files:
-        cmd = "sed -i 's/clang++/\$\{NDK_CXX\}/g' Makefile"
-        
+import pdb
 
 
+root_dir = os.path.dirname(os.path.abspath(__file__))
+
+def get_perf_tasks():
+    opt_dir = os.path.join(root_dir, "opt_gemm")
+    files = os.listdir(opt_dir)
+    split = lambda x: x.split(".")[0]
+    return map(split, files)
 
 def main():
-    pass
+    task_files = get_perf_tasks()
+    last_task = ""
+    for item in task_files:
+        cmd = f"sed -i 's/matmul_opt_2/{item}/g' Makefile"
+        os.system(cmd)
+        
+        
+
+    cmd = f"sed -i 's/{item}/matmul_opt_2/g' Makefile"
+    os.system(cmd)
+
+
+if __name__ == "__main__":
+    main()
