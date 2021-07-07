@@ -22,6 +22,7 @@ eval_objs := $(OUT)/eval.o
 
 test_objs := $(OUT)/matmul_opt_2.o
 
+
 $(OUT)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 	
@@ -35,14 +36,13 @@ perf: clean $(perf_objs) $(test_objs) $(comm_objs)
 	$(LINKER) $(perf_objs) $(test_objs) $(comm_objs) $(LDFLAGS)  -o $(TARGET)
 	rm $(OUT)/*.o
 
-test: clean $(perf_objs) $(test_objs) $(comm_objs)
+test: $(eval_objs) $(test_objs) $(comm_objs)
 	$(LINKER) $(eval_objs) $(test_objs) $(comm_objs) $(LDFLAGS)  -o $(TARGET)
 	rm $(OUT)/*.o
+	cd $(OUT) && ./main
 
-run: clean
-	make matmul
-	./main 128 128 128
-	make clean
-
+run_perf: perf
+	python perf
+	
 clean:
 	rm -rf build

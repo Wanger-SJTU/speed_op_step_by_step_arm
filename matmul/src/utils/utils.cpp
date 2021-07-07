@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #define A(i, j) a[(j)*m + (i)]
+#define B(i, j) b[(j)*m + (i)]
 
 double dclock();
 
@@ -17,6 +18,19 @@ void print_matrix(int m, int n, float *a) {
     printf("\n");
   }
   printf("\n");
+}
+
+bool compare_matrix(int m, int n, float *a, float *b) {
+  int i, j;
+  double max_diff = 0.0, diff;
+
+  for (j = 0; j < n; j++)
+    for (i = 0; i < m; i++) {
+      diff = abs(A(i, j) - B(i, j));
+      max_diff = (diff > max_diff ? diff : max_diff);
+    }
+
+  return max_diff < 1e-6;
 }
 
 void set_matrix_value(int m, int n, float *a) {
