@@ -60,7 +60,7 @@ bool test_acc(int m, int k, int n) {
 
 void eval_gflops(int m, int k, int n, float *a, float *b, float *c) {
 
-  double gflops = 2 * m * k * n * 1e-9;
+  double gflops = (2 * m * k * n - 1) * 1e-9;
   int run_cnt = 200;
 
   for (int i = 0; i < 50; ++i) {

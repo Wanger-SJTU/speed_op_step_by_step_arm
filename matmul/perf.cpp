@@ -16,8 +16,6 @@ int main(int argc, char *argv[]) {
     params[i - 1] = stoi(argv[i]);
   }
 
-  test_acc(params[0], params[1], params[2]);
-
   float *a = new float[params[0] * params[1]]; // m * k
   float *b = new float[params[1] * params[2]]; // k * n
   float *c = new float[params[0] * params[2]]; // m * n

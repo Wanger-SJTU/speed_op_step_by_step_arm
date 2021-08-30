@@ -18,7 +18,8 @@ def main():
         cmd = f"sed -i 's/matmul_opt_2/{item}/g' Makefile"
         os.system(cmd)
         
-        
+        for i in range(4, 11):
+            cmd = f"./run_arm.sh {2**i} {2**i} {2**i}"
 
     cmd = f"sed -i 's/{item}/matmul_opt_2/g' Makefile"
     os.system(cmd)

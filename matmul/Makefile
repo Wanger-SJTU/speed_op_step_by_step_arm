@@ -20,8 +20,7 @@ comm_objs := $(OUT)/utils.o $(OUT)/dclock.o $(OUT)/matmul_raw.o
 perf_objs := $(OUT)/perf.o
 eval_objs := $(OUT)/eval.o
 
-test_objs := $(OUT)/matmul_opt_2.o
-
+test_objs := $(OUT)/matmul_opt_3.o
 
 $(OUT)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -29,7 +28,7 @@ $(OUT)/%.o: %.cpp
 $(OUT)/%.o: $(OPT_SRC)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(OUT)/%.o: $(UTILS_SRC)/%.cpp 
+$(OUT)/%.o: $(UTILS_SRC)/%.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 perf: clean $(perf_objs) $(test_objs) $(comm_objs)
@@ -43,6 +42,9 @@ test: $(eval_objs) $(test_objs) $(comm_objs)
 
 run_perf: perf
 	python perf
-	
+
+run: clean perf
+	cd $(OUT) && ./main 128 128 128 
+
 clean:
-	rm -rf build
+	rm -rf build/*.o $(TARGET)
