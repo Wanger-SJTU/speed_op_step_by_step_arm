@@ -1,30 +1,31 @@
 
 #include "matmul.h"
+#include "parameters.h"
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
-  if (argc < 4) {
-    printf("too few args\n");
+float perf_one_pass(int m, int k, int n)
+{
+    float *a = new float[m * k]; // m * k
+    float *b = new float[k * n]; // k * n
+    float *c = new float[m * n]; // m * n
+    memset(c, 0, m * n * sizeof(float));
+
+    eval_gflops(m, k, n, a, b, c);
+    delete[] a;
+    delete[] b;
+    delete[] c;
+}
+
+int main(int argc, char *argv[])
+{
+
+    //   set_sched_affinity({7});
+
+    for (auto &m_k_n : parameters)
+    {
+        perf_one_pass(m_k_n[0], m_k_n[1], m_k_n[2]);
+    }
+
     return 0;
-  }
-
-  set_sched_affinity({7});
-
-  int params[3]; // m k n
-  for (int i = 1; i < 4; ++i) {
-    params[i - 1] = stoi(argv[i]);
-  }
-
-  float *a = new float[params[0] * params[1]]; // m * k
-  float *b = new float[params[1] * params[2]]; // k * n
-  float *c = new float[params[0] * params[2]]; // m * n
-  memset(c, 0, params[0] * params[2] * sizeof(float));
-
-  eval_gflops(params[0], params[1], params[2], a, b, c);
-  delete[] a;
-  delete[] b;
-  delete[] c;
-
-  return 0;
 }
