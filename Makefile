@@ -32,9 +32,14 @@ $(OUT)/%.o: src/$(UTILS_SRC)/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CFLAGS) -c $< -o $@
 
-$(OUT)/%.o: src/gflops/%.cpp
+$(OUT)/gflops: src/gflops/test.S src/gflops/gflps_main.c
 	@mkdir -p $(@D)
-	$(CXX) $(CFLAGS) -c $< -o $@
+	${NDK_AS} -o $(OUT)/test.o src/gflops/test.S
+	${NDK_CC} -c src/gflops/gflps_main.c -o $(OUT)/main.o
+	${NDK_CC} -o $(OUT)/gflops $(OUT)/main.o $(OUT)/test.o 
+
+clean:
+	rm -rf main *.o
 
 
 $(OUT)/raw_perf: $(comm_objs)  $(OUT)/matmul_raw.o
