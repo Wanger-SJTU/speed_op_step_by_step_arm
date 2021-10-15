@@ -4,7 +4,7 @@
 
 using namespace std;
 
-float perf_one_pass(int m, int k, int n)
+void perf_one_pass(int m, int k, int n)
 {
     float *a = new float[m * k]; // m * k
     float *b = new float[k * n]; // k * n
