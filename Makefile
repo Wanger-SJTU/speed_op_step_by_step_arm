@@ -16,9 +16,10 @@ LDFLAGS    := -lm
 
 comm_objs := $(OUT)/utils.o $(OUT)/dclock.o  $(OUT)/perf.o
 
-eval_objs := $(OUT)/eval.o
 
-test_objs := $(OUT)/gemm_4x4x4.o
+default: clean $(OUT)/raw_perf $(OUT)/opt_1
+
+test:
 
 $(OUT)/%.o: src/%.cpp
 	@mkdir -p $(@D)
@@ -38,18 +39,12 @@ $(OUT)/gflops: src/gflops/test.S src/gflops/gflps_main.c
 	${NDK_CC} -c src/gflops/gflps_main.c -o $(OUT)/main.o
 	${NDK_CC} -o $(OUT)/gflops $(OUT)/main.o $(OUT)/test.o 
 
-clean:
-	rm -rf main *.o
-
 
 $(OUT)/raw_perf: $(comm_objs)  $(OUT)/matmul_raw.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-
-
-.PHONY: $(OUT)/raw_perf
-
-all: 
+$(OUT)/opt_1: $(comm_objs)  $(OUT)/matmul_opt_1.o
+	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean:
 	rm -rf build/
