@@ -32,7 +32,7 @@ def main():
     plt.xlabel('m_n_k')
     plt.ylabel('GFLOPS')
     plt.legend()
-    plt.savefig('build/gflops.png', dpi=300)
+    plt.savefig('gflops.png', dpi=300)
 
 
 if __name__ == "__main__":
