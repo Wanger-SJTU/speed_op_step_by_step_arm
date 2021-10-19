@@ -85,7 +85,7 @@ void eval_gflops(int m, int k, int n, float *a, float *b, float *c)
     }
     double timeuse = dclock() - time;
 
-    printf(" M:%d K:%d N:%d GFLOPS: %.3f use time: %.3f ms \n", m, k, n,
+    printf("M:%d K:%d N:%d GFLOPS:%.3f use time:%.3f ms \n", m, k, n,
            gflops * run_cnt / (timeuse + 1e-6), timeuse / run_cnt * 1000);
 }
 
