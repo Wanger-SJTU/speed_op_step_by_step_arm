@@ -17,12 +17,11 @@
 
 /* Routine for computing C = A * B + C */
 // col-major
-void matmul(int m, int k, int n, float *a, float *b, float *c)
+void matmul(int m, int n, int k, float *a, int lda,
+            float *b, int ldb,
+            float *c, int ldc)
 {
     int i, j, p;
-    int lda = m;
-    int ldb = k;
-    int ldc = m;
 
     for (j = 0; j < n; j++)
     { /* Loop over the columns of C */

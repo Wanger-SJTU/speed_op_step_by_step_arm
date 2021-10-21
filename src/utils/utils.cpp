@@ -50,24 +50,9 @@ void set_matrix_value(int m, int n, float *a)
     }
 }
 
-bool test_acc(int m, int k, int n)
-{
-
-    float *a = new float[m * k]; // m * k
-    float *b = new float[k * n]; // k * n
-    float *c = new float[m * n]; // m * n
-    memset(c, 0, m * n * sizeof(float));
-
-    set_matrix_value(m, k, a);
-    set_matrix_value(k, n, b);
-    print_matrix(m, k, a);
-    print_matrix(k, n, b);
-    matmul(m, k, n, a, b, c);
-    print_matrix(m, n, c);
-    return true;
-}
-
-void eval_gflops(int m, int k, int n, float *a, float *b, float *c)
+void eval_gflops(int m, int n, int k, float *a, int lda,
+                 float *b, int ldb,
+                 float *c, int ldc)
 {
 
     double gflops = (2 * m * k * n - 1) * 1e-9;
@@ -75,13 +60,13 @@ void eval_gflops(int m, int k, int n, float *a, float *b, float *c)
 
     for (int i = 0; i < 50; ++i)
     {
-        matmul(m, k, n, a, b, c);
+        matmul(m, k, n, a, lda, b, ldb, c, ldc);
     }
 
     auto time = dclock();
     for (int i = 0; i < run_cnt; ++i)
     {
-        matmul(m, k, n, a, b, c);
+        matmul(m, k, n, a, lda, b, ldb, c, ldc);
     }
     double timeuse = dclock() - time;
 
@@ -110,4 +95,37 @@ int set_sched_affinity(const std::vector<int> cpu_ids)
         return -1;
     }
     return 0;
+}
+
+void malloc_helper(int m, int n, void **ptr)
+{
+    *ptr = malloc(m * n * sizeof(float));
+    if (ptr == nullptr)
+    {
+        printf("OOM");
+        exit(-1);
+    }
+}
+void malloc_matrix(int m, int n, int k, float **a, int &lda,
+                   float **b, int &ldb,
+                   float **c, int &ldc,
+                   float **ref)
+{
+#ifndef ALIGN
+    malloc_helper(m, k, reinterpret_cast<void **>(a));
+    malloc_helper(k, n, reinterpret_cast<void **>(b));
+    malloc_helper(m, n, reinterpret_cast<void **>(c));
+    malloc_helper(m, n, reinterpret_cast<void **>(ref));
+    lda = m;
+    ldb = k;
+    ldc = n;
+#else
+    malloc_helper(m, k, reinterpret_cast<void **>(a));
+    malloc_helper(k, n, reinterpret_cast<void **>(b));
+    malloc_helper(m, n, reinterpret_cast<void **>(c));
+    malloc_helper(m, n, reinterpret_cast<void **>(ref));
+    lda = m;
+    ldb = k;
+    ldc = n;
+#endif
 }

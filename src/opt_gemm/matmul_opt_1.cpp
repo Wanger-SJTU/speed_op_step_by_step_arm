@@ -23,7 +23,9 @@ void AddDot(int k, float *x, int incx, float *y, float *out)
 
 /* Routine for computing C = A * B + C */
 // colum-major
-void matmul(int m, int k, int n, float *a, float *b, float *c)
+void matmul(int m, int n, int k, float *a, int lda,
+            float *b, int ldb,
+            float *c, int ldc)
 {
 
     for (int i = 0; i < m; i++)

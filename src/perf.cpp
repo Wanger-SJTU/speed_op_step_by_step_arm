@@ -6,12 +6,13 @@ using namespace std;
 
 void perf_one_pass(int m, int k, int n)
 {
-    float *a = new float[m * k]; // m * k
-    float *b = new float[k * n]; // k * n
-    float *c = new float[m * n]; // m * n
+    float *a, *b, *c, *ref;
+    int lda, ldb, ldc;
+    malloc_matrix(m, n, k, &a, lda, &b, ldb, &c, ldc, &ref);
+
     memset(c, 0, m * n * sizeof(float));
 
-    eval_gflops(m, k, n, a, b, c);
+    eval_gflops(m, k, n, a, lda, b, ldb, c, ldc);
     delete[] a;
     delete[] b;
     delete[] c;

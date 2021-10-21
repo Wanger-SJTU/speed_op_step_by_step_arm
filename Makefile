@@ -16,13 +16,15 @@ LDFLAGS := -lm
 comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  $(INTERMEDIATE)/perf.o
 
 
-default: clean $(OUT)/opt_1 \
-				$(OUT)/raw_m_n_k_perf \
-				$(OUT)/raw_n_m_k_perf \
-				$(OUT)/raw_m_k_n_perf \
-				$(OUT)/raw_k_m_n_perf \
-				$(OUT)/raw_n_k_m_perf \
-				$(OUT)/raw_k_n_m_perf 
+default: clean perf
+
+perf: 	$(OUT)/opt_1 \
+		$(OUT)/raw_m_n_k_perf \
+		$(OUT)/raw_n_m_k_perf \
+		$(OUT)/raw_m_k_n_perf \
+		$(OUT)/raw_k_m_n_perf \
+		$(OUT)/raw_n_k_m_perf \
+		$(OUT)/raw_k_n_m_perf 
 
 test:
 
