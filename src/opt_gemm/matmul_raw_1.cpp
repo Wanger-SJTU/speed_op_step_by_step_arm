@@ -16,22 +16,20 @@
 #define C(i, j) c[(j)*m + (i)]
 
 /* Routine for computing C = A * B + C */
-// col-major
-void matmul(int m, int n, int k, float *a, int lda,
+
+void matmul(int m, int n, int k,
+            float *a, int lda,
             float *b, int ldb,
             float *c, int ldc)
 {
     int i, j, p;
 
     for (j = 0; j < n; j++)
-    { /* Loop over the columns of C */
+    {
         for (i = 0; i < m; i++)
-        { /* Loop over the rows of C */
+        {
             for (p = 0; p < k; p++)
             {
-                /* Update C(i,j) with the inner
-                    product of the ith
-                    row of A and the jth column of B */
                 C(i, j) += A(i, p) * B(p, j);
             }
         }

@@ -15,15 +15,20 @@ int main()
 
     for (auto &params : test_params)
     {
-        a = new float[params[0] * params[1]];
-        b = new float[params[1] * params[2]];
-        c = new float[params[0] * params[2]];
-        ref = new float[params[0] * params[2]];
+        m = params[0];
+        n = params[1];
+        k = params[2];
 
-        matmul_ref(params[0], params[1], params[2], a, b, ref);
+        malloc_matrix(m, k, n, &a, lda, &b, ldb, &c, ldc, &ref);
+        set_matrix_value(m, k, a, lda);
+        set_matrix_value(k, n, b, ldb);
+        memset(c, 0, m * n * sizeof(float));
+        memset(ref, 0, m * n * sizeof(float));
 
+        matmul_ref(m, k, n, a, lda, b, ldb, c, ldc);
         matmul(m, k, n, a, lda, b, ldb, c, ldc);
-        auto res = compare_matrix(params[0], params[2], ref, c);
+        auto res = compare_matrix(params[0], params[2], ref, c, ldc);
+
         if (!res)
         {
             printf(".Error");

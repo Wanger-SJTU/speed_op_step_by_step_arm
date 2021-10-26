@@ -28,6 +28,7 @@ def main():
         if os.path.isfile(file_path) and "." not in item:
             print("==== run %s ========" % item)
             res = run_cmd("bash push.sh {}".format(file_path), item)
+            # res = run_cmd("bash test.sh {}".format(item), item)
 
     plt.xlabel('m_n_k')
     plt.ylabel('GFLOPS')

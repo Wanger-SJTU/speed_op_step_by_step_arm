@@ -3,12 +3,13 @@
 
 #include <stdio.h>
 
-#define A(i, j) a[(j)*m + (i)]
-#define B(i, j) b[(j)*m + (i)]
+#define A(i, j) a[(j)*lda + (i)]
+#define B(i, j) b[(j)*ldb + (i)]
+#define REF(i, j) ref[(j)*lda + (i)]
 
 double dclock();
 
-void print_matrix(int m, int n, float *a)
+void print_matrix(int m, int n, float *a, int lda)
 {
     int i, j;
 
@@ -24,7 +25,7 @@ void print_matrix(int m, int n, float *a)
     printf("\n");
 }
 
-bool compare_matrix(int m, int n, float *a, float *b)
+bool compare_matrix(int m, int n, float *a, float *ref, int lda)
 {
     int i, j;
     double max_diff = 0.0, diff;
@@ -32,14 +33,14 @@ bool compare_matrix(int m, int n, float *a, float *b)
     for (j = 0; j < n; j++)
         for (i = 0; i < m; i++)
         {
-            diff = abs(A(i, j) - B(i, j));
+            diff = abs(A(i, j) - REF(i, j));
             max_diff = (diff > max_diff ? diff : max_diff);
         }
 
     return max_diff < 1e-6;
 }
 
-void set_matrix_value(int m, int n, float *a)
+void set_matrix_value(int m, int n, float *a, int lda)
 {
     int i, j = 1;
     for (i = 1; i <= m * n; i++)
@@ -106,6 +107,7 @@ void malloc_helper(int m, int n, void **ptr)
         exit(-1);
     }
 }
+
 void malloc_matrix(int m, int n, int k, float **a, int &lda,
                    float **b, int &ldb,
                    float **c, int &ldc,

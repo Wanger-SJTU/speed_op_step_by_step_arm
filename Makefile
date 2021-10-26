@@ -9,22 +9,28 @@ OUT := build
 INTERMEDIATE :=$(OUT)/intermediate
 
 CXX := ${NDK_CXX}
-CFLAGS := -O0 -I$(INC)
+CFLAGS := -O3 -I$(INC) -std=c++14
 LDFLAGS := -lm
 
 
 comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  $(INTERMEDIATE)/perf.o
 
 
-default: clean perf
+default: clean perf raw
+# raw
+
 
 perf: 	$(OUT)/opt_1 \
-		$(OUT)/raw_m_n_k_perf \
+		$(OUT)/opt_2 \
+
+raw:	$(OUT)/raw_m_n_k_perf \
 		$(OUT)/raw_n_m_k_perf \
 		$(OUT)/raw_m_k_n_perf \
 		$(OUT)/raw_k_m_n_perf \
 		$(OUT)/raw_n_k_m_perf \
 		$(OUT)/raw_k_n_m_perf 
+
+gflops: $(OUT)/gflops
 
 test:
 
@@ -66,6 +72,9 @@ $(OUT)/raw_n_k_m_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_5.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(OUT)/opt_1: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_1.o
+	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(OUT)/opt_2: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_2.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean:
