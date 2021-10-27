@@ -11,6 +11,16 @@
 #define B(i, j) b[(j)*ldb + (i)]
 #define C(i, j) c[(j)*ldc + (i)]
 
+#define Y(i) y[(i)*incx]
+
+void AddDot(int k, float *x, int incx, float *y, float *out)
+{
+    for (int p = 0; p < k; p++)
+    {
+        *out += x[p] * Y(p);
+    }
+}
+
 /* Routine for computing C = A * B + C */
 // col-major
 void matmul(int m, int n, int k,
@@ -24,10 +34,7 @@ void matmul(int m, int n, int k,
     {
         for (j = 0; j < n; j++)
         {
-            for (p = 0; p < k; p++)
-            {
-                C(i, j) += A(i, p) * B(p, j);
-            }
+            AddDot(k, &B(0, j), lda, &A(i, 0), &C(i, j));
         }
     }
 }

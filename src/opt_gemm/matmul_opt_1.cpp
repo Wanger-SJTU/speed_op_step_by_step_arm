@@ -18,10 +18,10 @@ void AddDot(int k, float *x, int incx, float *y, float *out)
 
 void AddDot_1x4(int k, float *a, int lda, float *b, int ldb, float *c, int ldc)
 {
-    AddDot(k, &A(0, 0), lda, &B(0, 0), &C(0, 0));
-    AddDot(k, &A(0, 0), lda, &B(0, 0), &C(0, 0));
-    AddDot(k, &A(0, 0), lda, &B(0, 0), &C(0, 0));
-    AddDot(k, &A(0, 0), lda, &B(0, 0), &C(0, 0));
+    AddDot(k, &B(0, 0), ldb, &A(0, 0), &C(0, 0));
+    AddDot(k, &B(0, 0), ldb, &A(0, 1), &C(0, 1));
+    AddDot(k, &B(0, 0), ldb, &A(0, 2), &C(0, 2));
+    AddDot(k, &B(0, 0), ldb, &A(0, 3), &C(0, 3));
 }
 
 /* Routine for computing C = A * B + C */
@@ -31,14 +31,14 @@ void matmul(int m, int n, int k, float *a, int lda,
             float *c, int ldc)
 {
 
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < m; i++) // m*k
     {
-        for (int j = 0; j < n; j += 4)
+        for (int j = 0; j < n; j += 4) // k*n
         {
-            AddDot(k, &B(0, j), m, &A(i, 0), &C(i, j));
-            AddDot(k, &B(0, j + 1), m, &A(i, 0), &C(i, j + 1));
-            AddDot(k, &B(0, j + 2), m, &A(i, 0), &C(i, j + 2));
-            AddDot(k, &B(0, j + 3), m, &A(i, 0), &C(i, j + 3));
+            AddDot(k, &B(j + 0, 0), lda, &A(0, i), &C(i, j + 0));
+            AddDot(k, &B(j + 1, 0), lda, &A(0, i), &C(i, j + 1));
+            AddDot(k, &B(j + 2, 0), lda, &A(0, i), &C(i, j + 2));
+            AddDot(k, &B(j + 3, 0), lda, &A(0, i), &C(i, j + 3));
         }
     }
 }

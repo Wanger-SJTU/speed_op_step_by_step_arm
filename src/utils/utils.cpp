@@ -36,18 +36,26 @@ bool compare_matrix(int m, int n, float *a, float *ref, int lda)
             diff = abs(A(i, j) - REF(i, j));
             max_diff = (diff > max_diff ? diff : max_diff);
         }
-
+    printf("%f \t", max_diff);
     return max_diff < 1e-6;
 }
 
-void set_matrix_value(int m, int n, float *a, int lda)
+void set_matrix_value(int m, int n, int k, float *a, int lda,
+                      float *b, int ldb,
+                      float *c, int ldc, float *ref)
 {
-    int i, j = 1;
-    for (i = 1; i <= m * n; i++)
+    for (int i = 0; i <= m * k; i++)
     {
-        a[i - 1] = j;
-        if ((i) % m == 0)
-            j++;
+        a[i] = 1;
+    }
+    for (int i = 0; i <= k * n; i++)
+    {
+        b[i] = 1;
+    }
+    for (int i = 0; i <= m * n; i++)
+    {
+        c[i] = 0;
+        ref[i] = 0;
     }
 }
 
@@ -101,10 +109,15 @@ int set_sched_affinity(const std::vector<int> cpu_ids)
 void malloc_helper(int m, int n, void **ptr)
 {
     *ptr = malloc(m * n * sizeof(float));
+
     if (ptr == nullptr)
     {
-        printf("OOM");
+        printf("malloc failed\n");
         exit(-1);
+    }
+    else
+    {
+        printf("malloc %p \n", *ptr);
     }
 }
 
@@ -113,21 +126,23 @@ void malloc_matrix(int m, int n, int k, float **a, int &lda,
                    float **c, int &ldc,
                    float **ref)
 {
-#ifndef ALIGN
+    // #ifndef ALIGN
+    //     malloc_helper(m, k, reinterpret_cast<void **>(a));
+    //     malloc_helper(k, n, reinterpret_cast<void **>(b));
+    //     malloc_helper(m, n, reinterpret_cast<void **>(c));
+    //     malloc_helper(m, n, reinterpret_cast<void **>(ref));
+    //     lda = m;
+    //     ldb = k;
+    //     ldc = m;
+    // #else
+    malloc_helper(m, n, reinterpret_cast<void **>(ref));
+    malloc_helper(m, n, reinterpret_cast<void **>(c));
     malloc_helper(m, k, reinterpret_cast<void **>(a));
     malloc_helper(k, n, reinterpret_cast<void **>(b));
-    malloc_helper(m, n, reinterpret_cast<void **>(c));
-    malloc_helper(m, n, reinterpret_cast<void **>(ref));
     lda = m;
     ldb = k;
-    ldc = n;
-#else
-    malloc_helper(m, k, reinterpret_cast<void **>(a));
-    malloc_helper(k, n, reinterpret_cast<void **>(b));
-    malloc_helper(m, n, reinterpret_cast<void **>(c));
-    malloc_helper(m, n, reinterpret_cast<void **>(ref));
-    lda = m;
-    ldb = k;
-    ldc = n;
-#endif
+    ldc = m;
+    // #endif
+    memset(*c, 0, m * n * sizeof(float));
+    memset(*ref, 0, m * n * sizeof(float));
 }
