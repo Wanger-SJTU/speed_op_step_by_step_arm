@@ -13,8 +13,7 @@ void perf_one_pass(int m, int k, int n)
     memset(c, 0, m * n * sizeof(float));
     memset(ref, 0, m * n * sizeof(float));
 
-    set_matrix_value(m, k, a, lda);
-    set_matrix_value(k, n, b, ldb);
+    set_matrix_value(m, n, k, a, lda, b, ldb, c, ldc, ref);
 
     eval_gflops(m, k, n, a, lda, b, ldb, c, ldc);
 

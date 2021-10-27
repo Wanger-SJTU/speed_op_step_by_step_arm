@@ -21,7 +21,9 @@ void matmul_ref(int m, int n, int k, float *a, int lda,
 
 void print_matrix(int m, int n, float *a, int lda);
 bool compare_matrix(int m, int n, float *a, float *ref, int lda);
-void set_matrix_value(int m, int n, float *a, int lda);
+void set_matrix_value(int m, int n, int k, float *a, int lda,
+                      float *b, int ldb,
+                      float *c, int ldc, float *ref);
 
 void eval_gflops(int m, int n, int k, float *a, int lda,
                  float *b, int ldb,
