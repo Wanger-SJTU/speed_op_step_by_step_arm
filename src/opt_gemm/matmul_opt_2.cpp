@@ -35,25 +35,25 @@ void matmul(int m, int n, int k, float *a, int lda,
     {
         for (int j = 0; j < n; j += 4)
         {
-            AddDot(k, &B(0, j), ldb, &A(i, 0), &C(i, j));
-            AddDot(k, &B(0, j + 1), ldb, &A(i, 0), &C(i, j + 1));
-            AddDot(k, &B(0, j + 2), ldb, &A(i, 0), &C(i, j + 2));
-            AddDot(k, &B(0, j + 3), ldb, &A(i, 0), &C(i, j + 3));
+            AddDot(k, &B(0, j + 0), ldb, &A(i + 0, 0), &C(i + 0, j + 0));
+            AddDot(k, &B(0, j + 1), ldb, &A(i + 0, 0), &C(i + 0, j + 1));
+            AddDot(k, &B(0, j + 2), ldb, &A(i + 0, 0), &C(i + 0, j + 2));
+            AddDot(k, &B(0, j + 3), ldb, &A(i + 0, 0), &C(i + 0, j + 3));
 
-            AddDot(k, &B(0, j), ldb, &A(i + 1, 0), &C(i, j));
-            AddDot(k, &B(0, j + 1), ldb, &A(i + 1, 0), &C(i, j + 1));
-            AddDot(k, &B(0, j + 2), ldb, &A(i + 1, 0), &C(i, j + 2));
-            AddDot(k, &B(0, j + 3), ldb, &A(i + 1, 0), &C(i, j + 3));
+            AddDot(k, &B(0, j + 0), ldb, &A(i + 1, 0), &C(i + 1, j + 0));
+            AddDot(k, &B(0, j + 1), ldb, &A(i + 1, 0), &C(i + 1, j + 1));
+            AddDot(k, &B(0, j + 2), ldb, &A(i + 1, 0), &C(i + 1, j + 2));
+            AddDot(k, &B(0, j + 3), ldb, &A(i + 1, 0), &C(i + 1, j + 3));
 
-            AddDot(k, &B(0, j), ldb, &A(i + 2, 0), &C(i, j));
-            AddDot(k, &B(0, j + 1), ldb, &A(i + 2, 0), &C(i, j + 1));
-            AddDot(k, &B(0, j + 2), ldb, &A(i + 2, 0), &C(i, j + 2));
-            AddDot(k, &B(0, j + 3), ldb, &A(i + 2, 0), &C(i, j + 3));
+            AddDot(k, &B(0, j + 0), ldb, &A(i + 2, 0), &C(i + 2, j + 0));
+            AddDot(k, &B(0, j + 1), ldb, &A(i + 2, 0), &C(i + 2, j + 1));
+            AddDot(k, &B(0, j + 2), ldb, &A(i + 2, 0), &C(i + 2, j + 2));
+            AddDot(k, &B(0, j + 3), ldb, &A(i + 2, 0), &C(i + 2, j + 3));
 
-            AddDot(k, &B(0, j), ldb, &A(i + 3, 0), &C(i, j));
-            AddDot(k, &B(0, j + 1), ldb, &A(i + 3, 0), &C(i, j + 1));
-            AddDot(k, &B(0, j + 2), ldb, &A(i + 3, 0), &C(i, j + 2));
-            AddDot(k, &B(0, j + 3), ldb, &A(i + 3, 0), &C(i, j + 3));
+            AddDot(k, &B(0, j + 0), ldb, &A(i + 3, 0), &C(i + 3, j + 0));
+            AddDot(k, &B(0, j + 1), ldb, &A(i + 3, 0), &C(i + 3, j + 1));
+            AddDot(k, &B(0, j + 2), ldb, &A(i + 3, 0), &C(i + 3, j + 2));
+            AddDot(k, &B(0, j + 3), ldb, &A(i + 3, 0), &C(i + 3, j + 3));
         }
     }
 }

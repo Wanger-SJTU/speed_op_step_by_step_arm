@@ -8,7 +8,7 @@ UTILS_SRC := utils
 OUT := build
 INTERMEDIATE :=$(OUT)/intermediate
 
-#CXX := ${NDK_#CXX}
+CXX:=${NDK_CXX}
 CFLAGS := -O3 -I$(INC) -std=c++14
 LDFLAGS := -lm
 
@@ -32,7 +32,10 @@ raw:	$(OUT)/raw_m_n_k_perf \
 
 gflops: $(OUT)/gflops
 
-test: $(OUT)/test
+test: clean $(OUT)/test
+
+clean: 
+	rm -rf $(OUT)
 
 
 $(INTERMEDIATE)/%.o: src/%.cpp
@@ -80,6 +83,3 @@ $(OUT)/opt_2: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_2.o
 
 $(OUT)/test: $(INTERMEDIATE)/matmul_opt_2.o  $(INTERMEDIATE)/eval.o $(INTERMEDIATE)/matmul_ref.o $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o 
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
-
-clean:
-	rm -rf build/
