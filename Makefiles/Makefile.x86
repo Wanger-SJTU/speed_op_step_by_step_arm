@@ -5,10 +5,9 @@
 INC := inc
 OPT_SRC := opt_gemm
 UTILS_SRC := utils
-OUT := build
+OUT := build/x86
 INTERMEDIATE :=$(OUT)/intermediate
 
-CXX:=${NDK_CXX}
 CPPFLAGS := -Wall -fpermissive -std=c++11 -O3 -march=armv8-a -ftree-vectorize -I$(INC)
 LDFLAGS := -lm
 
