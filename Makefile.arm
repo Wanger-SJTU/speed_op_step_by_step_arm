@@ -9,7 +9,7 @@ OUT := build
 INTERMEDIATE :=$(OUT)/intermediate
 
 CXX:=${NDK_CXX}
-CFLAGS := -O3 -I$(INC) -std=c++14
+CPPFLAGS := -Wall -fpermissive -std=c++11 -O3 -march=armv8-a -ftree-vectorize -I$(INC)
 LDFLAGS := -lm
 
 
@@ -40,15 +40,15 @@ clean:
 
 $(INTERMEDIATE)/%.o: src/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 	
 $(INTERMEDIATE)/%.o: src/$(OPT_SRC)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 $(INTERMEDIATE)/%.o: src/$(UTILS_SRC)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 $(OUT)/gflops: src/gflops/test.S src/gflops/gflps_main.c
 	@mkdir -p $(@D)
