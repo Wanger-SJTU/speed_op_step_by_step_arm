@@ -3,7 +3,7 @@
 # sample makefile
 #
 INC := inc
-OPT_SRC := opt_gemm
+COMMON_SRC := common
 UTILS_SRC := utils
 OUT := build/x86
 INTERMEDIATE :=$(OUT)/intermediate
@@ -15,11 +15,13 @@ LDFLAGS := -lm
 comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  $(INTERMEDIATE)/perf.o
 
 
-default: clean perf raw
+default: perf
 # raw
 
+perf: 	$(OUT)/raw_m_n_k_perf \
+		$(OUT)/opt_1 \
 
-perf: 	$(OUT)/opt_1 \
+opt: 	$(OUT)/opt_1 \
 		$(OUT)/opt_2 \
 
 raw:	$(OUT)/raw_m_n_k_perf \
@@ -31,7 +33,7 @@ raw:	$(OUT)/raw_m_n_k_perf \
 
 gflops: $(OUT)/gflops
 
-test: clean $(OUT)/test
+test: $(OUT)/test
 
 clean: 
 	rm -rf $(OUT)
@@ -41,7 +43,7 @@ $(INTERMEDIATE)/%.o: src/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 	
-$(INTERMEDIATE)/%.o: src/$(OPT_SRC)/%.cpp
+$(INTERMEDIATE)/%.o: src/$(COMMON_SRC)/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 

@@ -19,7 +19,7 @@ comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  $(INTERMEDIATE)/p
 default: clean perf
 # raw
 
-perf:
+perf: 
 
 opt: 	$(OUT)/opt_1 \
 		$(OUT)/opt_2 \
@@ -33,7 +33,7 @@ raw:	$(OUT)/raw_m_n_k_perf \
 
 gflops: $(OUT)/gflops
 
-test: clean $(OUT)/test
+test: $(OUT)/test
 
 clean: 
 	rm -rf $(OUT)

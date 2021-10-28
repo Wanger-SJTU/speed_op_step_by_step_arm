@@ -38,8 +38,9 @@ def main():
     if cmd_args.task == "test":
         os.system("./build/test")
     elif cmd_args.task == "perf":
-        for item in os.listdir("build"):
-            file_path = os.path.abspath(os.path.join("build", item))
+        dir_path = "build/{}".format(cmd_args.platform)
+        for item in os.listdir(dir_path):
+            file_path = os.path.abspath(os.path.join(dir_path, item))
             if os.path.isfile(file_path) and "." not in item:
                 print("==== run %s ========" % item)
                 run_cmd("bash run.sh {} {}".format(
