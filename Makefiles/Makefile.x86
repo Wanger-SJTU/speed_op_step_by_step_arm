@@ -8,7 +8,7 @@ UTILS_SRC := utils
 OUT := build/x86
 INTERMEDIATE :=$(OUT)/intermediate
 
-CPPFLAGS := -Wall -fpermissive -std=c++11 -O3 -march=armv8-a -ftree-vectorize -I$(INC)
+CPPFLAGS := -std=c++11 -O3 -I$(INC)
 LDFLAGS := -lm
 
 

@@ -23,7 +23,7 @@ def run_cmd(cmd, name):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--paltform", "-p", default="armv8a")
+    parser.add_argument("--platform", "-p", default="armv8a")
     parser.add_argument("--task", "-t", default="perf")
     args = parser.parse_args()
 
@@ -36,19 +36,20 @@ def main():
         "make {} -f Makefiles/Makefile.{}".format(cmd_args.task, cmd_args.platform))
 
     if cmd_args.task == "test":
-        pass
+        os.system("./build/test")
     elif cmd_args.task == "perf":
         for item in os.listdir("build"):
             file_path = os.path.abspath(os.path.join("build", item))
             if os.path.isfile(file_path) and "." not in item:
                 print("==== run %s ========" % item)
-                res = run_cmd("bash run.sh {}".format(file_path), item)
+                run_cmd("bash run.sh {} {}".format(
+                    cmd_args.platform, file_path), item)
                 # res = run_cmd("bash test.sh {}".format(item), item)
 
-    plt.xlabel('m_n_k')
-    plt.ylabel('GFLOPS')
-    plt.legend()
-    plt.savefig('{}_gflops.png'.format(cmd_args.platform), dpi=300)
+        plt.xlabel('m_n_k')
+        plt.ylabel('GFLOPS')
+        plt.legend()
+        plt.savefig('{}_gflops.png'.format(cmd_args.platform), dpi=300)
 
 
 if __name__ == "__main__":

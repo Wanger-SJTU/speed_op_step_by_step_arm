@@ -2,9 +2,10 @@
 platform=$1
 ori_path=$2
 
-if [$platform == "arm"]; then
+if [ $platform == 'armv8a' ] 
+then
     adb push $ori_path /data/main
     adb shell "cd /data/ && chmod +x main && ./main"
 else
-    ./ori_path
+    $ori_path
 fi
