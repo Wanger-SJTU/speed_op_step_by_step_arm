@@ -32,11 +32,15 @@ def parse_args():
 
 def main():
     cmd_args = parse_args()
+
+    os.system("make clean -f Makefiles/Makefile.{}".format(cmd_args.platform))
+
     subprocess.getoutput(
         "make {} -f Makefiles/Makefile.{}".format(cmd_args.task, cmd_args.platform))
 
     if cmd_args.task == "test":
         os.system("./build/test")
+
     elif cmd_args.task == "perf":
         dir_path = "build/{}".format(cmd_args.platform)
         for item in os.listdir(dir_path):
@@ -50,7 +54,7 @@ def main():
         plt.xlabel('m_n_k')
         plt.ylabel('GFLOPS')
         plt.legend()
-        plt.savefig('{}_gflops.png'.format(cmd_args.platform), dpi=300)
+        plt.savefig('gflops.{}.png'.format(cmd_args.platform), dpi=300)
 
 
 if __name__ == "__main__":

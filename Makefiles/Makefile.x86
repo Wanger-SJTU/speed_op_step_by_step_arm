@@ -18,7 +18,7 @@ comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  $(INTERMEDIATE)/p
 default: perf
 # raw
 
-perf: 	$(OUT)/raw_m_n_k_perf \
+perf: 	$(OUT)/raw_m_k_n_perf \
 		$(OUT)/opt_1 \
 
 opt: 	$(OUT)/opt_1 \
@@ -58,22 +58,22 @@ $(OUT)/gflops: src/gflops/test.S src/gflops/gflps_main.c
 	${NDK_CC} -o $(OUT)/gflops $(INTERMEDIATE)/main.o $(INTERMEDIATE)/test.o 
 
 
-$(OUT)/raw_m_n_k_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_0.o
+$(OUT)/raw_m_n_k_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_mnk.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/raw_n_m_k_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_1.o
+$(OUT)/raw_n_m_k_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_nmk.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/raw_m_k_n_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_2.o
+$(OUT)/raw_m_k_n_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_mkn.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/raw_k_m_n_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_3.o
+$(OUT)/raw_k_m_n_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_kmn.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/raw_k_n_m_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_4.o
+$(OUT)/raw_k_n_m_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_knm.o
 	$(CXX) $(PKG`_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/raw_n_k_m_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_5.o
+$(OUT)/raw_n_k_m_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_nkm.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(OUT)/opt_1: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_1.o
