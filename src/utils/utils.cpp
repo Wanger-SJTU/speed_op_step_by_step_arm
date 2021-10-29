@@ -67,10 +67,12 @@ void eval_gflops(int m, int n, int k, float *a, int lda,
     double gflops = (2 * m * k * n - 1) * 1e-9;
     int run_cnt = 200;
 
-    for (int i = 0; i < 50; ++i)
+#ifdef __android__
+    for (int i = 0; i < 5; ++i)
     {
         matmul(m, k, n, a, lda, b, ldb, c, ldc);
     }
+#endif
 
     auto time = dclock();
     for (int i = 0; i < run_cnt; ++i)

@@ -13,3 +13,6 @@
 perf: 17.542160 GFLOPS
 
 ![](gflops.png)
+
+## cpu_perf 
+- x86 https://github.com/pigirons/cpufp.git
