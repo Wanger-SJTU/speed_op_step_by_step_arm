@@ -39,7 +39,7 @@ def main():
         "make {} -f Makefiles/Makefile.{}".format(cmd_args.task, cmd_args.platform))
 
     if cmd_args.task == "test":
-        os.system("./build/test")
+        os.system("./build/x86/test")
 
     elif cmd_args.task == "perf":
         dir_path = "build/{}".format(cmd_args.platform)
