@@ -2,6 +2,7 @@
 #include "matmul.h"
 
 #include <stdio.h>
+#include <random>
 
 #define A(i, j) a[(j)*lda + (i)]
 #define B(i, j) b[(j)*ldb + (i)]
@@ -44,14 +45,19 @@ void set_matrix_value(int m, int n, int k, float *a, int lda,
                       float *b, int ldb,
                       float *c, int ldc, float *ref)
 {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+
     for (int i = 0; i <= m * k; i++)
     {
-        a[i] = 1;
+        a[i] = mt();
     }
+
     for (int i = 0; i <= k * n; i++)
     {
-        b[i] = 1;
+        b[i] = mt();
     }
+
     for (int i = 0; i <= m * n; i++)
     {
         c[i] = 0;
@@ -67,7 +73,7 @@ void eval_gflops(int m, int n, int k, float *a, int lda,
     double gflops = (2 * m * k * n - 1) * 1e-9;
     int run_cnt = 200;
 
-#ifdef __android__
+#ifdef __arm__
     for (int i = 0; i < 5; ++i)
     {
         matmul(m, k, n, a, lda, b, ldb, c, ldc);
