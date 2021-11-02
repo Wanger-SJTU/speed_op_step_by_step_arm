@@ -112,5 +112,5 @@ $(OUT)/matmul_opt_mnk_1x8: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_mnk_1x8.o
 $(OUT)/opt_2: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_2.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/test: $(INTERMEDIATE)/matmul_opt_2.o  $(INTERMEDIATE)/eval.o $(INTERMEDIATE)/matmul_ref.o $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o 
+$(OUT)/test: $(INTERMEDIATE)/transpose_n_k_m.o  $(INTERMEDIATE)/eval.o $(INTERMEDIATE)/matmul_ref.o $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o 
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)

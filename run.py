@@ -33,10 +33,10 @@ def parse_args():
 def main():
     cmd_args = parse_args()
 
-    os.system("make clean -f Makefiles/Makefile.{}".format(cmd_args.platform))
+    os.system("make clean -f Makefiles/{}.Makefile".format(cmd_args.platform))
 
     subprocess.getoutput(
-        "make {} -f Makefiles/Makefile.{}".format(cmd_args.task, cmd_args.platform))
+        "make {} -f Makefiles/{}.Makefile".format(cmd_args.task, cmd_args.platform))
 
     if cmd_args.task == "test":
         os.system("./build/x86/test")

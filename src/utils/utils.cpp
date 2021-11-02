@@ -123,10 +123,6 @@ void malloc_helper(int m, int n, void **ptr)
         printf("malloc failed\n");
         exit(-1);
     }
-    else
-    {
-        printf("malloc %p \n", *ptr);
-    }
 }
 
 void malloc_matrix(int m, int n, int k, float **a, int &lda,
