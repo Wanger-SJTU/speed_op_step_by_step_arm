@@ -15,13 +15,14 @@ LDFLAGS := -lm
 comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  $(INTERMEDIATE)/perf.o
 
 
-default: perf
+all: opt raw transpose
+
 # raw
 
 perf: 	transpose
 
-opt: 	$(OUT)/opt_1 \
-		$(OUT)/opt_2 \
+opt: 	$(OUT)/matmul_opt_mnk_1x4 \
+		$(OUT)/matmul_opt_mnk_1x8 \
 
 raw:	$(OUT)/raw_m_n_k \
 		$(OUT)/raw_n_m_k \

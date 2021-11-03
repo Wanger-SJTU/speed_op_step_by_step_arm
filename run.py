@@ -40,21 +40,26 @@ def main():
 
     if cmd_args.task == "test":
         os.system("./build/x86/test")
+        return
 
-    elif cmd_args.task == "perf":
-        dir_path = "build/{}".format(cmd_args.platform)
-        for item in os.listdir(dir_path):
-            file_path = os.path.abspath(os.path.join(dir_path, item))
-            if os.path.isfile(file_path) and "." not in item:
-                print("==== run %s ========" % item)
-                run_cmd("bash run.sh {} {}".format(
-                    cmd_args.platform, file_path), item)
-                # res = run_cmd("bash test.sh {}".format(item), item)
+    # elif cmd_args.task == "perf":
+    dir_path = "build/{}".format(cmd_args.platform)
+    if not os.path.exists(dir_path):
+        print("build failed")
+        return
 
-        plt.xlabel('m_n_k')
-        plt.ylabel('GFLOPS')
-        plt.legend()
-        plt.savefig('gflops.{}.png'.format(cmd_args.platform), dpi=300)
+    for item in os.listdir(dir_path):
+        file_path = os.path.abspath(os.path.join(dir_path, item))
+        if os.path.isfile(file_path) and "." not in item:
+            print("==== run %s ========" % item)
+            run_cmd("bash run.sh {} {}".format(
+                cmd_args.platform, file_path), item)
+            # res = run_cmd("bash test.sh {}".format(item), item)
+
+    plt.xlabel('m_n_k')
+    plt.ylabel('GFLOPS')
+    plt.legend()
+    plt.savefig('gflops.{}.png'.format(cmd_args.platform), dpi=300)
 
 
 if __name__ == "__main__":
