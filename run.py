@@ -21,6 +21,21 @@ def run_cmd(cmd, name):
     plt.plot(mnk, gflops, label=str(name))
 
 
+def run_test(platform):
+    dirs = ["src/common", "src/{}/opt".format(platform)]
+    os.system("make clean -f Makefiles/{}.Makefile".format(platform))
+    for dir in dirs:
+        for file in os.listdir(dir):
+
+            subprocess.getoutput(
+                # os.system(
+                "make test -f Makefiles/{}.Makefile TEST_ITEM={}".format(platform, file.split(".")[0]))
+            print("run for {}".format(file))
+            os.system("./build/{}/test".format(platform))
+
+    pass
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--platform", "-p", default="x86")
@@ -33,14 +48,13 @@ def parse_args():
 def main():
     cmd_args = parse_args()
 
-    os.system("make clean -f Makefiles/{}.Makefile".format(cmd_args.platform))
+    if cmd_args.task == "test":
+        run_test(cmd_args.platform)
+        return
 
+    os.system("make clean -f Makefiles/{}.Makefile".format(cmd_args.platform))
     subprocess.getoutput(
         "make {} -f Makefiles/{}.Makefile".format(cmd_args.task, cmd_args.platform))
-
-    if cmd_args.task == "test":
-        os.system("./build/x86/test")
-        return
 
     # elif cmd_args.task == "perf":
     dir_path = "build/{}".format(cmd_args.platform)
