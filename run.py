@@ -23,7 +23,7 @@ def run_cmd(cmd, name):
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--platform", "-p", default="armv8a")
+    parser.add_argument("--platform", "-p", default="x86")
     parser.add_argument("--task", "-t", default="perf")
     args = parser.parse_args()
 
