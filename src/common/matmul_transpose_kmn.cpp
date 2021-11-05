@@ -11,6 +11,16 @@
 #define B(i, j) b[(j)*ldb + (i)]
 #define C(i, j) c[(j)*ldc + (i)]
 
+void transpose(float *a, int lda, int m, int n)
+{
+    for (int i = 0; i < m; ++i)
+    {
+        for (int i = 0; i < m; ++i)
+        {
+                }
+    }
+}
+
 /* Routine for computing C = A * B + C */
 void matmul(int m, int n, int k,
             float *a, int lda,

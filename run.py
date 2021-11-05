@@ -7,7 +7,7 @@ import argparse
 fig = plt.figure(figsize=(8, 5))
 
 
-def run_cmd(cmd, name):
+def run_perf_cmd(cmd, name):
     output = subprocess.getoutput(cmd)
     mnk = []
     gflops = []
@@ -21,19 +21,33 @@ def run_cmd(cmd, name):
     plt.plot(mnk, gflops, label=str(name))
 
 
+def run_test_cmd(cmd):
+    output = subprocess.getoutput(cmd)
+    for line in output.split("\n"):
+        if ".Error" in line:
+            return False
+    return True
+
+
 def run_test(platform):
     dirs = ["src/common", "src/{}/opt".format(platform)]
     os.system("make clean -f Makefiles/{}.Makefile".format(platform))
+
     for dir in dirs:
-        for file in os.listdir(dir):
+        for file in sorted(os.listdir(dir)):
+            # subprocess.getoutput(
+            if "trans" in file:
+                continue
 
-            subprocess.getoutput(
-                # os.system(
-                "make test -f Makefiles/{}.Makefile TEST_ITEM={}".format(platform, file.split(".")[0]))
-            print("run for {}".format(file))
-            os.system("./build/{}/test".format(platform))
+            cmd = "make test -f Makefiles/{}.Makefile TEST_ITEM={}".format(
+                platform, file.split(".")[0])
+            subprocess.getoutput(cmd)
 
-    pass
+            if platform == "x86":
+                if not run_test_cmd("./build/{}/test".format(platform)):
+                    print("run for {} Error".format(file))
+            else:
+                pass
 
 
 def parse_args():
@@ -66,7 +80,7 @@ def main():
         file_path = os.path.abspath(os.path.join(dir_path, item))
         if os.path.isfile(file_path) and "." not in item:
             print("==== run %s ========" % item)
-            run_cmd("bash run.sh {} {}".format(
+            run_perf_cmd("bash run.sh {} {}".format(
                 cmd_args.platform, file_path), item)
             # res = run_cmd("bash test.sh {}".format(item), item)
 

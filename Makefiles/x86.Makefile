@@ -15,14 +15,14 @@ LDFLAGS := -lm
 comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  $(INTERMEDIATE)/perf.o
 
 
-all: opt raw transpose
+all: opt raw
 
 # raw
 
 perf: 	transpose
 
-opt: 	$(OUT)/matmul_opt_mnk_1x4 \
-		$(OUT)/matmul_opt_mnk_1x8 \
+opt: 	$(OUT)/matmul_opt_mnk_1x4_1 \
+		$(OUT)/matmul_opt_mnk_1x4_2 \
 
 raw:	$(OUT)/raw_m_n_k \
 		$(OUT)/raw_n_m_k \
@@ -98,14 +98,12 @@ $(OUT)/transpose_n_k_m: $(comm_objs)  $(INTERMEDIATE)/matmul_transpose_nkm.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 
-$(OUT)/matmul_opt_mnk_1x4: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_mnk_1x4.o
+$(OUT)/matmul_opt_mnk_1x4_1: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_mnk_1x4_1.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/matmul_opt_mnk_1x8: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_mnk_1x8.o
+$(OUT)/matmul_opt_mnk_1x4_2: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_mnk_1x4_2.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/opt_2: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_2.o
-	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(OUT)/test: $(INTERMEDIATE)/${TEST_ITEM}.o  $(INTERMEDIATE)/eval.o $(INTERMEDIATE)/matmul_ref.o $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o 
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
