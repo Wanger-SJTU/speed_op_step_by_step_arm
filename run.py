@@ -46,6 +46,8 @@ def run_test(platform):
             if platform == "x86":
                 if not run_test_cmd("./build/{}/test".format(platform)):
                     print("run for {} Error".format(file))
+                else:
+                    print("pass")
             else:
                 pass
 
