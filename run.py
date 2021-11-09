@@ -32,7 +32,7 @@ def run_test_cmd(cmd):
 def run_test(platform):
     dirs = ["src/common", "src/{}/opt".format(platform)]
     os.system("make clean -f Makefiles/{}.Makefile".format(platform))
-
+    all_pass = True
     for dir in dirs:
         for file in sorted(os.listdir(dir)):
             # subprocess.getoutput(
@@ -46,10 +46,11 @@ def run_test(platform):
             if platform == "x86":
                 if not run_test_cmd("./build/{}/test".format(platform)):
                     print("run for {} Error".format(file))
-                else:
-                    print("pass")
+                    all_pass = False
             else:
                 pass
+    if all_pass:
+        print("all pass")
 
 
 def parse_args():
