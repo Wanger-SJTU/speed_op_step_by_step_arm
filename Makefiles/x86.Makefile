@@ -25,7 +25,9 @@ opt: 	$(OUT)/matmul_opt_mnk_1x4_1 \
 		$(OUT)/matmul_opt_mnk_1x4_2 \
 	 	$(OUT)/matmul_opt_nkm_1x4_1 \
 	 	$(OUT)/matmul_opt_nkm_1x4_2 \
+		$(OUT)/matmul_opt_nkm_1x8
 
+		
 raw:	$(OUT)/raw_m_n_k \
 		$(OUT)/raw_n_m_k \
 		$(OUT)/raw_m_k_n \
@@ -110,6 +112,10 @@ $(OUT)/matmul_opt_nkm_1x4_1: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_nkm_1x4_1.
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(OUT)/matmul_opt_nkm_1x4_2: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_nkm_1x4_2.o
+	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
+
+
+$(OUT)/matmul_opt_nkm_1x8: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_nkm_1x8.o
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(OUT)/test: $(INTERMEDIATE)/${TEST_ITEM}.o  $(INTERMEDIATE)/eval.o $(INTERMEDIATE)/matmul_ref.o $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o 

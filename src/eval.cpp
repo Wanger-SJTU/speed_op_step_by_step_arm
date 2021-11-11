@@ -12,7 +12,7 @@ int main()
     int lda, ldb, ldc;
 
     vector<vector<int>> test_params = {
-        {128, 128, 128}};
+        {128, 128, 128}, {12, 12, 12}};
 
     for (auto &params : test_params)
     {

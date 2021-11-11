@@ -26,11 +26,10 @@ int main(int argc, char *argv[])
 {
 
     // set_sched_affinity({7});
-    int m = 8;
-    for (int i = 1; i < 16; i += 1)
+    int m = 4;
+    for (int i = 2; i < 2000; i += 1)
     {
-        m *= 2;
-        perf_one_pass(m, m, m);
+        perf_one_pass(m * i, m * i, m * i);
     }
 
     return 0;
