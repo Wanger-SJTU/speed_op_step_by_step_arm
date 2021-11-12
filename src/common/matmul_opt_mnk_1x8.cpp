@@ -48,11 +48,11 @@ void matmul(int m, int n, int k, float *a, int lda,
             AddDot_1x8(k, &A(i, 0), lda, &B(0, j), ldb, &C(i, j), ldc);
         }
     }
-    for (; j < n; j += 4) // k*n
+    for (; j < (n - n % 4); j += 4) // k*n
     {
         for (int i = 0; i < m; i++) // m*k
         {
-            AddDot_1x8(k, &A(i, 0), lda, &B(0, j), ldb, &C(i, j), ldc);
+            AddDot_1x4(k, &A(i, 0), lda, &B(0, j), ldb, &C(i, j), ldc);
         }
     }
 }
