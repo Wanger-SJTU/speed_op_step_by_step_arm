@@ -3,9 +3,9 @@
 # sample makefile
 #
 INC := inc
-OPT_SRC := common
+COMMON_SRC := common
 UTILS_SRC := utils
-OUT := build/armv8
+OUT := build/armv8a
 INTERMEDIATE :=$(OUT)/intermediate
 
 CXX:=${NDK_CXX}
@@ -13,23 +13,9 @@ CPPFLAGS := -Wall -fpermissive -std=c++11 -O3 -march=armv8-a -ftree-vectorize -I
 LDFLAGS := -lm
 
 
-comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  $(INTERMEDIATE)/perf.o
+comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o 
 
-
-default: clean perf
-# raw
-
-perf: 
-
-opt: 	$(OUT)/opt_1 \
-		$(OUT)/opt_2 \
-
-raw:	$(OUT)/raw_m_n_k_perf \
-		$(OUT)/raw_n_m_k_perf \
-		$(OUT)/raw_m_k_n_perf \
-		$(OUT)/raw_k_m_n_perf \
-		$(OUT)/raw_n_k_m_perf \
-		$(OUT)/raw_k_n_m_perf 
+perf: ${OUT}/${PERF_ITEM}
 
 gflops: $(OUT)/gflops
 
@@ -43,44 +29,17 @@ $(INTERMEDIATE)/%.o: src/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 	
-$(INTERMEDIATE)/%.o: src/$(OPT_SRC)/%.cpp
+$(INTERMEDIATE)/%.o: src/$(COMMON_SRC)/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 $(INTERMEDIATE)/%.o: src/$(UTILS_SRC)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CPPFLAGS) -c $< -o $@
-
-$(OUT)/gflops: src/gflops/test.S src/gflops/gflps_main.c
-	@mkdir -p $(@D)
-	${NDK_AS} -o $(INTERMEDIATE)/test.o src/gflops/test.S
-	${NDK_CC} -c src/gflops/gflps_main.c -o $(INTERMEDIATE)/main.o
-	${NDK_CC} -o $(OUT)/gflops $(INTERMEDIATE)/main.o $(INTERMEDIATE)/test.o 
+	$(CXX)  -c $< -o $@ $(CPPFLAGS)
 
 
-$(OUT)/raw_m_n_k_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_mnk.o
+$(OUT)/${PERF_ITEM}: $(INTERMEDIATE)/${PERF_ITEM}.o $(INTERMEDIATE)/perf.o $(comm_objs) 
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(OUT)/raw_n_m_k_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_nmk.o
-	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
-
-$(OUT)/raw_m_k_n_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_mkn.o
-	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
-
-$(OUT)/raw_k_m_n_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_kmn.o
-	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
-
-$(OUT)/raw_k_n_m_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_knm.o
-	$(CXX) $(PKG`_CFLAGS) -o $@ $^ $(LDFLAGS)
-
-$(OUT)/raw_n_k_m_perf: $(comm_objs)  $(INTERMEDIATE)/matmul_raw_nkm.o
-	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
-
-$(OUT)/opt_1: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_1.o
-	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
-
-$(OUT)/opt_2: $(comm_objs)  $(INTERMEDIATE)/matmul_opt_2.o
-	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
-
-$(OUT)/test: $(INTERMEDIATE)/matmul_opt_2.o  $(INTERMEDIATE)/eval.o $(INTERMEDIATE)/matmul_ref.o $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o 
+$(OUT)/test: $(INTERMEDIATE)/${TEST_ITEM}.o  $(INTERMEDIATE)/eval.o $(INTERMEDIATE)/matmul_ref.o $(comm_objs)
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)

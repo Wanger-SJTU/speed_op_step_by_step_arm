@@ -62,8 +62,8 @@ def run_perf(platform):
             if "trans" in file:
                 continue
             file = file.split(".")[0]
-            cmd = "make perf -f Makefiles/{}.Makefile PERF_ITEM={}".format(
-                platform, file)
+            cmd = f"make perf -f Makefiles/{platform}.Makefile PERF_ITEM={file}"
+            print(cmd)
             subprocess.getoutput(cmd)
 
             if platform == "x86":

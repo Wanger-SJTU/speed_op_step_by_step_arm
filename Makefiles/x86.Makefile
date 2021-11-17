@@ -14,7 +14,6 @@ LDFLAGS := -lm
 
 comm_objs := $(INTERMEDIATE)/utils.o $(INTERMEDIATE)/dclock.o  
 
-
 perf: ${OUT}/${PERF_ITEM}
 
 gflops: $(OUT)/gflops
@@ -38,7 +37,7 @@ $(INTERMEDIATE)/%.o: src/$(UTILS_SRC)/%.cpp
 	$(CXX)  -c $< -o $@ $(CPPFLAGS)
 
 
-$(OUT)/${PERF_ITEM}: $(comm_objs)  $(INTERMEDIATE)/${PERF_ITEM}.o $(INTERMEDIATE)/perf.o
+$(OUT)/${PERF_ITEM}: $(INTERMEDIATE)/${PERF_ITEM}.o $(INTERMEDIATE)/perf.o $(comm_objs) 
 	$(CXX) $(PKG_CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(OUT)/test: $(INTERMEDIATE)/${TEST_ITEM}.o  $(INTERMEDIATE)/eval.o $(INTERMEDIATE)/matmul_ref.o $(comm_objs)

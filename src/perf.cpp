@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
     // set_sched_affinity({7});
     int m = 4;
-    for (int i = 2; i < 256; i += 1)
+    for (int i = 2; i < 10; i += 1)
     {
         perf_one_pass(m * i, m * i, m * i);
     }
