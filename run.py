@@ -68,7 +68,7 @@ def run_perf(platform):
             if platform == "x86":
                 run_perf_cmd(f"./build/{platform}/{file}", file)
             else:
-                run_perf_cmd(f"bash run.sh", os.path.join(dir, file))
+                run_perf_cmd(f"bash run.sh ./build/{platform}/{file}", file)
 
 
 def parse_args():
