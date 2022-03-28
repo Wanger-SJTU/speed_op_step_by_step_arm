@@ -2,9 +2,9 @@
 #include <chrono>
 #include <iostream>
 
-#define A(i, j) a[i * m + j] // m * k
-#define B(i, j) a[i * k + j] // k * n
-#define C(i, j) a[i * m + j] // m * n
+#define A(i, j) a[i  + j* m] // m * k
+#define B(i, j) a[i  + j* k] // k * n
+#define C(i, j) a[i  + j* m] // m * n
 
 using namespace std;
 
@@ -30,18 +30,18 @@ int main()
         a = new float[mkn * mkn];
         b = new float[mkn * mkn];
         c = new float[mkn * mkn];
-        double gflops = (2 * mkn * mkn * mkn - 1) * 1e-9;
-        auto time_span = std::chrono::duration<double, std::milli>::max().count();
+        double gflops = (2 * mkn * mkn * mkn ) * 1e-9;
+        auto time_span = std::chrono::duration<double, std::micro>::max().count();
         for (int i = 0; i < 10; ++i)
         {
             auto start = std::chrono::high_resolution_clock::now();
             matmul(a, b, c, mkn, mkn, mkn);
             auto end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double, std::milli> dur = end - start;
+            std::chrono::duration<double, std::micro> dur = end - start;
             time_span = dur.count() < time_span ? dur.count() : time_span;
         }
         std::cout << "mkn:" << mkn << " FLOPs:" << gflops
-                  << " time:" << time_span << " gflops:" << gflops / (time_span / 1e6) << endl;
+                  << " time:" << time_span << " GFLOPS:" << gflops / (time_span /1000000) << endl;
         delete a;
         delete b;
         delete c;
