@@ -37,7 +37,7 @@ float ref_cmp(float*a, float*b, int m, int n)
     float err = 0;
     
     for(int i = 0; i < m*n; i++) {
-        err += a[i] - b[i];
+        err += (a[i] - b[i]);
     }
 
     return err;
@@ -52,15 +52,19 @@ int main()
     b = new float[mkn * mkn];
     c = new float[mkn * mkn];
     c_ref = new float[mkn * mkn];
+
     rand_matrix(a, mkn, mkn);
     rand_matrix(b, mkn, mkn);
+
     memset(c, 0, mkn * mkn * sizeof(float));
     memset(c_ref, 0, mkn * mkn * sizeof(float));
+
     matmul_cmp(a, b, c_ref, mkn, mkn, mkn);
     matmul(a, b, c, mkn, mkn, mkn);
 
     float err = ref_cmp(c, c_ref, mkn, mkn);
     cout << "err:" << err << endl;
+   
     delete a;
     delete b;
     delete c;
