@@ -27,13 +27,13 @@ void matmul(float *a, float *b, float *c, int m, int n, int k)
 
 int main()
 {
-    for (int mkn = 32; mkn <= 1024; mkn *= 2)
+    for (int mkn = 4; mkn <= 1024; mkn *= 2)
     {
         float *a, *b, *c;
         a = new float[mkn * mkn];
         b = new float[mkn * mkn];
         c = new float[mkn * mkn];
-        double gflops = (2 * mkn * mkn * mkn ) * 1e-9;
+        double gflops = (2 * (double)mkn * mkn * mkn ) * 1e-9;
         auto time_span = std::chrono::duration<double, std::micro>::max().count();
         for (int i = 0; i < 10; ++i)
         {
