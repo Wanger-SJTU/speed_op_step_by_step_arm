@@ -1,0 +1,120 @@
+fpu
+vme
+de
+pse
+tsc
+msr
+pae
+mce
+cx8
+apic
+sep
+mtrr
+pge
+mca
+cmov
+pat
+pse36
+clflush
+dts
+acpi
+mmx
+fxsr
+sse
+sse2
+ss
+ht
+tm
+pbe
+syscall
+nx
+pdpe1gb
+rdtscp
+lm
+pni
+pclmulqdq
+dtes64
+monitor
+ds_cpl
+vmx
+est
+tm2
+ssse3
+fma
+cx16
+xtpr
+pdcm
+pcid
+sse4_1
+sse4_2
+x2apic
+movbe
+popcnt
+tsc_deadline_timer
+aes
+xsave
+osxsave
+avx
+f16c
+rdrand
+lahf_lm
+abm
+3dnowprefetch
+fsgsbase
+tsc_adjust
+bmi1
+avx2
+smep
+bmi2
+erms
+invpcid
+rdt_a
+avx512f
+avx512dq
+rdseed
+adx
+smap
+avx512ifma
+clflushopt
+clwb
+intel_pt
+avx512cd
+sha_ni
+avx512bw
+avx512vl
+avx512vbmi
+umip
+pku
+avx512_vbmi2
+gfni
+vaes
+vpclmulqdq
+avx512_vnni
+avx512_bitalg
+avx512_vpopcntdq
+rdpid
+ibrs
+ibpb
+stibp
+ssbd
+
+
+LEVEL1_ICACHE_SIZE                 32768
+LEVEL1_ICACHE_ASSOC                8
+LEVEL1_ICACHE_LINESIZE             64
+
+LEVEL1_DCACHE_SIZE                 49152
+LEVEL1_DCACHE_ASSOC                12
+LEVEL1_DCACHE_LINESIZE             64
+
+LEVEL2_CACHE_SIZE                  1310720
+LEVEL2_CACHE_ASSOC                 20
+LEVEL2_CACHE_LINESIZE              64
+
+LEVEL3_CACHE_SIZE                  8388608
+LEVEL3_CACHE_ASSOC                 8
+LEVEL3_CACHE_LINESIZE              64
+
+LEVEL4_CACHE_SIZE                  0
+LEVEL4_CACHE_ASSOC                 0
+LEVEL4_CACHE_LINESIZE              0
