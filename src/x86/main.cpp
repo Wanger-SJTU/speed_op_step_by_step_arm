@@ -1,6 +1,9 @@
 
 #include "inc.h"
 
+#include <chrono>
+#include <iostream>
+using namespace std;
 
 int main()
 {
@@ -26,4 +29,5 @@ int main()
         delete b;
         delete c;
     }
+    return 0;
 }

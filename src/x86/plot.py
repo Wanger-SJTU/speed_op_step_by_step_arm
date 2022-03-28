@@ -22,8 +22,10 @@ bench_res = defaultdict(list)
 
 for file in files:
     print(f"----------{file}---------------")
+    if file in {"main.cpp", "eval.cpp"}:
+        continue
     os.system("make target={}".format(file.split(".cpp")[0]))
-    res = exec_cmd("./a.out")
+    res = exec_cmd("./main")
     for item in res:
         bench_res[file] += [float(item.split(":")[-1])]
 
