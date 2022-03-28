@@ -5,7 +5,6 @@
 #include <xmmintrin.h> // SSE
 #include <pmmintrin.h> // SSE2
 #include <emmintrin.h> // SSE3
-
 typedef union
 {
     __m128 v;
@@ -33,16 +32,18 @@ void add_dot_4x4_reg_reduce_k(float *a, float *b, float *c, int m, int n, int k)
     
     for (int i = 0; i < k; i++)
     {
-        a_p0_vreg.v = _mm_load1_ps((float *)a_p0_pntr++); /* load and duplicate */
-        a_p1_vreg.v = _mm_load1_ps((float *)a_p1_pntr++); /* load and duplicate */
-        a_p2_vreg.v = _mm_load1_ps((float *)a_p2_pntr++); /* load and duplicate */
-        a_p3_vreg.v = _mm_load1_ps((float *)a_p3_pntr++); /* load and duplicate */
-
         b_p_vreg.v = _mm_load_ps((float *) &B(0, i));
-
+        
+        a_p0_vreg.v = _mm_load1_ps((float *)a_p0_pntr++); /* load and duplicate */
         c_0_vreg.v += a_p0_vreg.v * b_p_vreg.v;
+       
+        a_p1_vreg.v = _mm_load1_ps((float *)a_p1_pntr++); /* load and duplicate */
         c_1_vreg.v += a_p1_vreg.v * b_p_vreg.v;
+        
+        a_p2_vreg.v = _mm_load1_ps((float *)a_p2_pntr++); /* load and duplicate */
         c_2_vreg.v += a_p2_vreg.v * b_p_vreg.v;
+        
+        a_p3_vreg.v = _mm_load1_ps((float *)a_p3_pntr++); /* load and duplicate */
         c_3_vreg.v += a_p3_vreg.v * b_p_vreg.v;
     }
 
