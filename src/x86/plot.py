@@ -1,5 +1,5 @@
 import os
-import random
+import json
 import subprocess
 from collections import defaultdict
 import matplotlib
@@ -20,17 +20,22 @@ files = [file for file in os.listdir("./") if file.endswith("cpp")]
 # value:[] GFLOPS
 bench_res = defaultdict(list)
 
+os.system("make clean")
+
+x = set()
 for file in files:
     print(f"----------{file}---------------")
-    if file in {"perf.cpp", "eval.cpp"}:
+    if file in {"perf.cpp", "eval.cpp", "utils.cpp"}:
         continue
     os.system("make target={}".format(file.split(".cpp")[0]))
     res = exec_cmd("./main")
     for item in res:
         bench_res[file] += [float(item.split(":")[-1])]
+        x.add(int(item.split(" ")[0].split(":")[-1]))
 
-x = [32*(i+1) for i in range(32)] 
+json.dump(bench_res, open("bench_res.json", "w"))
 
+x = sorted(list(x))
 fig, ax = plt.subplots()
 for key, value in bench_res.items():
     ax.plot(x, value, label=key, c=matplotlib.colors.to_hex(np.random.rand(3,)))

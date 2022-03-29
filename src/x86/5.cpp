@@ -79,9 +79,6 @@ void matmul(float *a, float *b, float *c, int m, int n, int k)
     for (int p = 0; p < k; p += in_k)
     {
         int partial_k = std::min({in_k, k - p});
-        // for (int pi = 0; pi < m; pi += in_m)
-        // {
-        //     int partial_m = std::min({in_m, m - pi});
             for (int j = 0; j < n; j += 4)
             {
                 for (int i = 0; i < m; i += 4)
@@ -89,6 +86,5 @@ void matmul(float *a, float *b, float *c, int m, int n, int k)
                     add_dot_4x4_reg_reduce_k(&(A(i, 0)), &(B(0, j)), &(C(i, j)), m, n, partial_k);
                 }
             }
-        // }
     }
 }
