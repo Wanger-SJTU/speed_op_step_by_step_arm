@@ -1,10 +1,13 @@
 
 #include "inc.h"
 
+#include <iostream>
+
 #include <mmintrin.h>
 #include <xmmintrin.h> // SSE
 #include <pmmintrin.h> // SSE2
 #include <emmintrin.h> // SSE3
+
 typedef union
 {
     __m128 v;
@@ -32,7 +35,7 @@ void add_dot_4x4_reg_reduce_k(float *a, float *b, float *c, int m, int n, int k)
     
     for (int i = 0; i < k; i++)
     {
-        b_p_vreg.v = _mm_load_ps((float *) &B(0, i));
+        b_p_vreg.v = _mm_load_ps((float *) &B(i, 0));
         
         a_p0_vreg.v = _mm_load1_ps((float *)a_p0_pntr++); /* load and duplicate */
         c_0_vreg.v += a_p0_vreg.v * b_p_vreg.v;
