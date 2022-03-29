@@ -7,7 +7,7 @@ using namespace std;
 
 int main()
 {
-    for (int mkn = 32; mkn <= 1024; mkn *= 2)
+    for (int mkn = 32; mkn <= 1024; mkn += 32)
     {
         float *a, *b, *c;
         a = new float[mkn * mkn];
