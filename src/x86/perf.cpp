@@ -4,7 +4,7 @@
 
 int main()
 {
-    for (int mkn = 192; mkn <= 2048; mkn += 32)
+    for (int mkn = 32; mkn <= 2048; mkn += 32)
     {
         float *a, *b, *c;
         a = static_cast<float*>(aligned_malloc(mkn * mkn * sizeof(float), 128));
