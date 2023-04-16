@@ -13,12 +13,12 @@ def run_perf_cmd(cmd, name):
     mnk = []
     gflops = []
     for line in output.split("\n"):
+        print(line)
         if "GFLOPS" not in line:
             continue
         items = line.split(" ")
         mnk.append(int(items[0].split(":")[1]))
         gflops.append(float(items[3].split(":")[1]))
-        print(line)
     plt.plot(mnk, gflops, label=str(name))
 
 
