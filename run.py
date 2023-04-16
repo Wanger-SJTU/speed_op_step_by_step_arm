@@ -1,6 +1,7 @@
 
 import os
 from matplotlib import pyplot as plt
+
 import subprocess
 import argparse
 
@@ -58,7 +59,6 @@ def run_perf(platform):
 
     for dir in dirs:
         for file in sorted(os.listdir(dir)):
-            # subprocess.getoutput(
             if "trans" in file:
                 continue
             file = file.split(".")[0]

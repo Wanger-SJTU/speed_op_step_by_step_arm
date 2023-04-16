@@ -38,3 +38,7 @@ void malloc_matrix(int m, int n, int k, float **a, int &lda,
 void matmul(int m, int n, int k, float *a, int lda,
             float *b, int ldb,
             float *c, int ldc);
+
+void* aligned_malloc(size_t required_bytes, size_t alignment);
+void aligned_free(void *p2);
+
