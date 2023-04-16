@@ -78,7 +78,7 @@ void eval_gflops(int m, int n, int k, float *a, int lda,
 {
 
     double gflops = (2 * m * k * n - 1) * 1e-9;
-    int run_cnt = 200;
+    int run_cnt = 10;
 
 // for warm up
 #ifdef __arm__

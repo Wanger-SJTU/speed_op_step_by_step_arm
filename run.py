@@ -59,7 +59,7 @@ def run_perf(platform):
 
     for dir in dirs:
         for file in sorted(os.listdir(dir)):
-            if "trans" in file:
+            if "trans" in file or "raw" not in file:
                 continue
             file = file.split(".")[0]
             cmd = f"make perf -f Makefiles/{platform}.Makefile PERF_ITEM={file}"
