@@ -2,6 +2,8 @@
 #include "matmul.h"
 #include "parameters.h"
 
+#include <math.h>
+
 using namespace std;
 
 void perf_one_pass(int m, int k, int n)
@@ -25,11 +27,14 @@ void perf_one_pass(int m, int k, int n)
 int main(int argc, char *argv[])
 {
 
-    // set_sched_affinity({7});
-    int m = 4;
-    for (int i = 2; i < 10; i += 1)
+#ifdef __arm__
+    set_sched_affinity({7});
+#endif
+    int m = 64;
+    for (int i = 0; i < 10; i += 1)
     {
-        perf_one_pass(m * i, m * i, m * i);
+        int value = pow(2, i);
+        perf_one_pass(m * value, m * value, m * value);
     }
 
     return 0;
