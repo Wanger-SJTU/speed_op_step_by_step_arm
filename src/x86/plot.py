@@ -2,9 +2,9 @@ import os
 import json
 import subprocess
 from collections import defaultdict
-import matplotlib
 
 import numpy as np
+import matplotlib
 from matplotlib import markers, pyplot as plt
 
 def exec_cmd(cmd):

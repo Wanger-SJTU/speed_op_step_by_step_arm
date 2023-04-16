@@ -90,7 +90,8 @@ def main():
         run_perf(cmd_args.platform)
         plt.xlabel('m_n_k')
         plt.ylabel('GFLOPS')
-        plt.legend()
+        # plt.legend(bbox_to_anchor=(1.3, 0.6), loc='center left')
+        # plt.tight_layout()
         plt.savefig('gflops.{}.png'.format(cmd_args.platform), dpi=300)
 
 
