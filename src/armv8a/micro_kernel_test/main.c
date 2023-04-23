@@ -10,7 +10,7 @@ void print_cnth()
     printf("%d\n", x);
     
     asm volatile(
-        "cnth x0"
+        "cntb x0"
         : "=x"(x)
         : "0"(x)
         :
@@ -20,5 +20,5 @@ void print_cnth()
 }
 
 int main() {
-
+    print_cnth();
 }

@@ -1,9 +1,9 @@
 ; // func2.S 每次循环做 40 次乘法，每条指令处理 4 个 float，共 10 条。
 .text
 .align 5
-.global func2
+.global func_neon
 
-func2:
+func_neon:
 .loop2:
     fmla v0.4s, v0.4s, v0.4s
     fmla v1.4s, v1.4s, v1.4s

@@ -13,13 +13,15 @@
 #include <syscall.h>
 
 #define LOOP (1e9)
-#define OP_FLOATS (96)
+// 12 ops mla 
+#define OP_FLOATS (12*2)
 
-void func2(int);
+
+void func_neon(int);
+void func_sve(int);
 
 int set_cpu_core(int core_idx)
 {
-
     cpu_set_t mask;
     CPU_ZERO(&mask);
 
@@ -44,9 +46,28 @@ int main()
     double time_used = 0.0;
     set_cpu_core(7);
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
-    func2(LOOP);
+    func_neon(LOOP);
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 
     time_used = get_time(&start, &end);
-    printf("perf: %.6lf \n", LOOP * OP_FLOATS * 1.0 * 1e-9 / time_used);
+    printf("neon perf: %.6lf \n", LOOP * OP_FLOATS * 4 * 1.0 * 1e-9 / time_used);
+
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+    func_sve(LOOP);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+    
+    time_used = get_time(&start, &end);
+    
+    register int x asm("x0");
+    x = 0;
+    printf("%d\n", x);
+    
+    asm volatile(
+        "cnth x0"
+        : "=x"(x)
+        : "0"(x)
+        :
+    );
+
+    printf("perf: %.6lf \n", LOOP * OP_FLOATS * (x / 2)* 1.0 * 1e-9 / time_used);
 }
